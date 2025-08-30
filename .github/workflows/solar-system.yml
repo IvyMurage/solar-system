@@ -45,7 +45,7 @@ jobs:
         - name: Archive Test Result
           uses: actions/upload-artifact@v4
           with: 
-            name: Mocha-Test-Result
+            name: Mocha-Test-Result-${{ matrix.node-version }}-${{ matrix.operating-system }}
             path: test-results.xml
 
     code-coverage:
@@ -78,7 +78,7 @@ jobs:
         - name: Archive Code Coverage Result
           uses: actions/upload-artifact@v4
           with:
-            name: Code-Coverage-Result
+            name: Code-Coverage-Result-${{ matrix.node-version }}-${{ matrix.operating-system }}
             path: coverage/coverage-final.json
             retention-days: 5
       
