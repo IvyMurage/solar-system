@@ -20,16 +20,16 @@ jobs:
               - node-version: 18
                 operating-system: macos-latest
         name: Unit Testing
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.operating-system }}
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
 
 
-        - name: Setup NodeJS Version
+        - name: Setup NodeJS Version - ${{ matrix.node-version }}
           uses: actions/setup-node@v4
           with:
-            node-version: 20
+            node-version: ${{ matrix.node-version }}
 
         - name: Install Dependencies
           run: npm install
