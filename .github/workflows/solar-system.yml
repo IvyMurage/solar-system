@@ -81,4 +81,20 @@ jobs:
             name: Code-Coverage-Result-${{ matrix.node-version }}-${{ matrix.operating-system }}
             path: coverage/coverage-final.json
             retention-days: 5
-      
+    docker:
+      name: Container Build and Push
+      needs: [unit-testing, code-coverage]
+      runs-on: ubuntu-latest
+      steps: 
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+
+        - name: Docker login
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+    
+          
+          
