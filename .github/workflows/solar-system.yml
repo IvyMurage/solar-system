@@ -12,6 +12,13 @@ env:
   MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 jobs:
     unit-testing:
+        strategy:
+          matrix:
+            node-version: [18, 19, 20]
+            operating-system: [ubuntu-latest, macos-latest]
+            exclude:
+              - node-version: 18
+                operating-system: macos-latest
         name: Unit Testing
         runs-on: ubuntu-latest
         steps:
