@@ -190,12 +190,13 @@ jobs:
               --from-literal=MONGO_PASSWORD="${{ env.MONGO_PASSWORD }}" \
               --dry-run=client -o yaml | kubectl apply -f -
 
-        - name: Get all resources
-          run: |
-            kubectl get all -n ${{vars.NAMESPACE}}
+  
         - name: Deploy to dev env
           run: |
             kubectl apply -f kubernetes/development
 
+        - name: Get all resources
+          run: |
+            kubectl get all -n ${{vars.NAMESPACE}}
 
 
