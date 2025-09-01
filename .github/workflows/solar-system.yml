@@ -137,13 +137,16 @@ jobs:
           uses: azure/setup-kubectl@v4
           with:
             version: v1.31.0
-        - name: Create development namespace
-          run: |
-            kubectl create namespace ${{vars.NAMESPACE}}
+     
         - name: Create kubernetes cluster with ingress support
           uses: helm/kind-action@v1
           with:
             cluster_name: ingress-cluster
+
+        - name: Create development namespace
+          run: |
+            kubectl create namespace ${{vars.NAMESPACE}}
+            
         - name: Install NGINX Ingress Controller
           run: |
               kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
