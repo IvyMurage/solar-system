@@ -193,9 +193,9 @@ jobs:
         - name: Get all resources
           run: |
             kubectl get all -n ${{vars.NAMESPACE}}
-        # - name: Deploy to dev env
-        #   run: |
-        #     kubectl apply -f kubernetes/development
+        - name: Deploy to dev env
+          run: |
+            kubectl apply -f kubernetes/development
 
 
 
