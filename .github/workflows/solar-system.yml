@@ -157,7 +157,7 @@ jobs:
                 --for=condition=ready pod \
                 --selector=app.kubernetes.io/component=controller \
                 --timeout=300s
-              kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 80:3000
+              kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 3000:80
 
         - name: Test kubernetes cluster
           run: |
