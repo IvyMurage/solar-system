@@ -146,17 +146,19 @@ jobs:
         - name: Create development namespace
           run: |
             kubectl create namespace ${{vars.NAMESPACE}}
-            
+
         - name: Install NGINX Ingress Controller
           run: |
               kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
                         
               # Wait for ingress controller to be ready
               echo "Waiting for ingress controller..."
-              kubectl wait --namespace ${{vars.NAMESPACE}} \
+              kubectl wait --namespace ingress-nginx \
                 --for=condition=ready pod \
                 --selector=app.kubernetes.io/component=controller \
                 --timeout=300s
+              kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 80:3000
+
         - name: Test kubernetes cluster
           run: |
             kubectl version -o yaml
