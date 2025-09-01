@@ -178,6 +178,9 @@ jobs:
           run: | 
             cat kubernetes/development/*.yaml
           
+        - name: Create development namespace
+          run: |
+            kubectl create namespace ${{vars.NAMESPACE}}
        
         - name: Create Mongodb secret
           run: |
@@ -187,9 +190,13 @@ jobs:
             --save-config \
             --dry-run=client \
             -o yaml | kubectl apply -f .
-        - name: Deploy to dev env
+
+        - name: Get all resources
           run: |
-            kubectl apply -f kubernetes/development
+            kubectl get all -n ${{vars.NAMESPACE}}
+        # - name: Deploy to dev env
+        #   run: |
+        #     kubectl apply -f kubernetes/development
 
 
 
