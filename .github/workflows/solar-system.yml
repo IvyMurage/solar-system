@@ -142,15 +142,13 @@ jobs:
           uses: helm/kind-action@v1
           with:
             cluster_name: solar-system-cluster
-            node_image: kindest/node:v1.31.0
+            node_image: kindest/node:v0.29.0
             config: |
               kind: Cluster
-              apiVersion: v1.31.0
+              apiVersion: v0.29.0
               nodes:
               - role: control-plane
-              image: kindest/node:v1.31.0
               - role: worker
-              image: kindest/node:v1.31.0
               
           
        
