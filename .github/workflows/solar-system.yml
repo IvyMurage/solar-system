@@ -140,6 +140,6 @@ jobs:
 
         - name: Fetch kubectl details
           run: |
-            kubectl version  -0 yaml
+            kubectl version -o yaml
             echo ---------
             kubectl get nodes
