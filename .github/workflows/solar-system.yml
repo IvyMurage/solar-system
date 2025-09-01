@@ -140,15 +140,13 @@ jobs:
 
         - name: Create kubernetes cluster with kind
           uses: helm/kind-action@v1
-          with:
-            cluster_name: solar-system-cluster
-            node_image: kindest/node:v0.29.0
-            config: |
-              kind: Cluster
-              apiVersion: v0.29.0
-              nodes:
-              - role: control-plane
-              - role: worker
+        
+        - name: Test kubernetes cluster
+          run: |
+            kubectl version -o yaml
+            echo ---------
+            kubectl get nodes
+         
               
           
        
