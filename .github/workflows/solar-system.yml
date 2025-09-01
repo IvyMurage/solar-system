@@ -30,7 +30,7 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
         - name: Cache Node Modules
-          uses: actions/cache@v4
+          uses: actions/cache@v3
           with:
             path: node_modules
             key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
@@ -90,7 +90,7 @@ jobs:
           uses: actions/checkout@v4
 
         - name: Docker login
-          uses: docker/login-action@v2
+          uses: docker/login-action@v3
           with:
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
@@ -138,8 +138,21 @@ jobs:
           with:
             version: v1.31.0
 
-        - name: Fetch kubectl details
-          run: |
-            kubectl version -o yaml
-            echo ---------
-            kubectl get nodes
+        - name: Create kubernetes cluster with kind
+          uses: helm/kind-action@v1
+          with:
+            cluster_name: solar-system-cluster
+            node_image: kindest/node:v1.31.0
+            config: |
+              kind: Cluster
+              apiVersion: v1.31.0
+              nodes:
+              - role: control-plane
+              image: kindest/node:v1.31.0
+              - role: worker
+              image: kindest/node:v1.31.0
+              
+          
+       
+                  
+
