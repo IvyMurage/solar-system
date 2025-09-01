@@ -138,16 +138,55 @@ jobs:
           with:
             version: v1.31.0
 
-        - name: Create kubernetes cluster with kind
+        - name: Create kubernetes cluster with ingress support
           uses: helm/kind-action@v1
-        
+          with:
+            cluster_name: solar-system-cluster
+            node_image: kindest/node:v1.31.0
+            config: |
+              kind: Cluster
+              apiVersion: kind.x-k8s.io/v1alpha4
+              nodes:
+                - role: control-plane
+                  kubeadmConfigPatches:
+                    - |
+                      kind: InitConfiguration
+                      nodeRegistration:
+                        kubeletExtraArgs:
+                          node-labels: "ingress-ready=true"
+                  extraPortMappings:
+                    - containerPort: 80
+                      hostPort: 80
+                      protocol: TCP
+                    - containerPort: 443
+                      hostPort: 443
+                      protocol: TCP
+        - name: Install NGINX Ingress Controller
+          run: |
+              kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+                        
+              # Wait for ingress controller to be ready
+              echo "Waiting for ingress controller..."
+              kubectl wait --namespace ingress-nginx \
+                --for=condition=ready pod \
+                --selector=app.kubernetes.io/component=controller \
+                --timeout=300s
         - name: Test kubernetes cluster
           run: |
             kubectl version -o yaml
             echo ---------
             kubectl get nodes
-         
-              
+        # - name: Replace tokens in manifest file
+          # uses: cschleiden/replace-tokens@v1
+          # with:
+          #   tokenPrefix: '_{_'
+          #   tokenSuffix: '_}_'
+          #   files: '["kubernetes/development/*.yaml"]'
+          # env:
+          #     NAMESPACE: ${{ vars.NAMESPACE }}
+          #     REPLICAS: ${{ vars.REPLICAS }}
+          #     IMAGE: ${{ secrets.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
+          #     INGRESS_IP:
           
        
                   
